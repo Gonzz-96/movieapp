@@ -26,7 +26,7 @@ func (g *Gateway) GetAggregatedRating(ctx context.Context, recordID model.Record
 	if err != nil {
 		return 0, err
 	}
-	url := " HYPERLINK \\h" + addrs[rand.Intn(len(addrs))] + "/rating"
+	url := ` HYPERLINK \h` + addrs[rand.Intn(len(addrs))] + "/rating"
 	log.Printf("Calling rating service. Request : GET " + url)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
@@ -65,7 +65,7 @@ func (g *Gateway) PutRating(ctx context.Context, recordID model.RecordID, record
 	if err != nil {
 		return err
 	}
-	url := " HYPERLINK \\h" + addrs[rand.Intn(len(addrs))] + "/rating"
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/rating"
 	log.Printf("Calling rating service. Request : PUT " + url)
 
 	req, err := http.NewRequest(http.MethodPut, url, nil)
@@ -88,7 +88,7 @@ func (g *Gateway) PutRating(ctx context.Context, recordID model.RecordID, record
 	defer resp.Body.Close()
 
 	if resp.StatusCode/100 != 2 {
-		return fmt.Errorf("non-2xx response: %v", resp)
+		return fmt.Errorf("non-2xx response from rating service: %v", resp)
 	}
 
 	return nil

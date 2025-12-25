@@ -27,7 +27,7 @@ func main() {
 		panic(err)
 	}
 	ctx := context.Background()
-	serviceName := ""
+	serviceName := "movie"
 	instanceID := discovery.GenerateInstanceID(serviceName)
 	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
 		panic(err)

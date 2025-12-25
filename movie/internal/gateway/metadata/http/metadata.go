@@ -26,7 +26,7 @@ func (g *Gateway) Get(ctx context.Context, id string) (*model.Metadata, error) {
 	if err != nil {
 		return nil, err
 	}
-	url := " HYPERLINK \\h" + addrs[rand.Intn(len(addrs))] + "/metadata"
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/metadata"
 	log.Printf("Calling metadata service. Request : GET " + url)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
@@ -48,7 +48,7 @@ func (g *Gateway) Get(ctx context.Context, id string) (*model.Metadata, error) {
 	if resp.StatusCode == http.StatusNotFound {
 		return nil, gateway.ErrNotFound
 	} else if resp.StatusCode/100 != 2 {
-		return nil, fmt.Errorf("Non 2xx response: &v", resp)
+		return nil, fmt.Errorf("Non 2xx response from metadata service: &v", resp)
 	}
 
 	var v *model.Metadata
