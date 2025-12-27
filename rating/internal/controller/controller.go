@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"movieexample.com/rating/internal/repository"
-	model "movieexample.com/rating/pkg"
+	"movieexample.com/rating/pkg/model"
 )
 
 var ErrNotFound = errors.New("ratings not found for a record")

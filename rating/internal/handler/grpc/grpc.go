@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 	"movieexample.com/gen"
 	rating "movieexample.com/rating/internal/controller"
-	model "movieexample.com/rating/pkg"
+	"movieexample.com/rating/pkg/model"
 )
 
 // Handler defines a gRPC rating API handler.

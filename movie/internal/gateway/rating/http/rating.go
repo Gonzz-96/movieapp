@@ -10,7 +10,7 @@ import (
 
 	"movieexample.com/movie/internal/gateway"
 	discovery "movieexample.com/pkg/registry"
-	model "movieexample.com/rating/pkg"
+	"movieexample.com/rating/pkg/model"
 )
 
 type Gateway struct {

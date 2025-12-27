@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	rating "movieexample.com/rating/internal/controller"
-	model "movieexample.com/rating/pkg"
+	"movieexample.com/rating/pkg/model"
 )
 
 type Handler struct {
