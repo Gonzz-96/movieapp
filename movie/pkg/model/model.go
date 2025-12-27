@@ -1,6 +1,8 @@
 package model
 
-import model "movieexample.com/metadata/pkg"
+import (
+	"movieexample.com/metadata/pkg/model"
+)
 
 type MovieDetails struct {
 	Rating   *float64       `json:"rating,omitEmpty"`
