@@ -3,6 +3,7 @@ package rating
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"movieexample.com/rating/internal/repository"
 	"movieexample.com/rating/pkg/model"
@@ -15,13 +16,19 @@ type ratingRepository interface {
 	Put(ctx context.Context, recordID model.RecordID, recordType model.RecordType, rating *model.Rating) error
 }
 
-type Controller struct {
-	repo ratingRepository
+type ratingIngester interface {
+	Ingest(ctx context.Context) (chan model.RatingEvent, error)
 }
 
-func New(repo ratingRepository) *Controller {
-	return &Controller{repo}
+type Controller struct {
+	repo     ratingRepository
+	ingester ratingIngester
 }
+
+func New(repo ratingRepository, ingester ratingIngester) *Controller {
+	return &Controller{repo, ingester}
+}
+
 func (c *Controller) GetAggregatedRating(ctx context.Context, recordID model.RecordID, recordType model.RecordType) (float64, error) {
 	ratings, err := c.repo.Get(ctx, recordID, recordType)
 	if err != nil && err == repository.ErrNotFound {
@@ -39,4 +46,18 @@ func (c *Controller) GetAggregatedRating(ctx context.Context, recordID model.Rec
 // PutRating writes a rating for a given record.
 func (c *Controller) PutRating(ctx context.Context, recordID model.RecordID, recordType model.RecordType, rating *model.Rating) error {
 	return c.repo.Put(ctx, recordID, recordType, rating)
+}
+
+func (c *Controller) StartIngestion(ctx context.Context) error {
+	ch, err := c.ingester.Ingest(ctx)
+	if err != nil {
+		return err
+	}
+	for e := range ch {
+		fmt.Printf("Consumed a message: %v\n", e)
+		if err := c.PutRating(ctx, model.RecordID(e.RecordID), model.RecordType(e.RecordType), &model.Rating{UserID: e.UserID, Value: e.Value}); err != nil {
+			return err
+		}
+	}
+	return nil
 }
