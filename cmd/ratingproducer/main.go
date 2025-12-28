@@ -18,7 +18,9 @@ func main() {
 	}
 	defer producer.Close()
 
-	const fileName = "ratingsdata.json"
+	workingDir, _ := os.Getwd()
+
+	fileName := workingDir + "/cmd/ratingproducer" + "/ratingsdata.json"
 	fmt.Println("Reading rating events from file: " + fileName)
 	ratingEvents, err := readRatingEvents(fileName)
 	if err != nil {

@@ -52,9 +52,11 @@ func main() {
 		log.Fatalf("failed to initialize ingester: %v", err)
 	}
 	ctrl := rating.New(repo, ingester)
-	if err := ctrl.StartIngestion(ctx); err != nil {
-		log.Fatalf("failed to start ingestion: %v", err)
-	}
+	go func() {
+		if err := ctrl.StartIngestion(ctx); err != nil {
+			log.Fatalf("failed to start ingestion: %v", err)
+		}
+	}()
 
 	h := grpchandler.New(ctrl)
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%v", port))

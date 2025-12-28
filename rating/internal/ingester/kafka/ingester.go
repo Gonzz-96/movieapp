@@ -17,7 +17,7 @@ type Ingester struct {
 func NewIngester(addr string, groupID string, topic string) (*Ingester, error) {
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": addr,
-		"groupd.id":         groupID,
+		"group.id":          groupID,
 		"auto.offset.reset": "earliest",
 	})
 	if err != nil {
