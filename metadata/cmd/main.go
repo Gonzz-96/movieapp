@@ -13,6 +13,7 @@ import (
 	"movieexample.com/gen"
 	metadata "movieexample.com/metadata/internal/controller"
 	grpchandler "movieexample.com/metadata/internal/handler/grpc"
+	"movieexample.com/metadata/internal/repository/memory"
 	"movieexample.com/metadata/internal/repository/mysql"
 	"movieexample.com/pkg/discovery/consul"
 	discovery "movieexample.com/pkg/registry"
@@ -43,14 +44,15 @@ func main() {
 		}
 	}()
 	defer registry.Deregister(ctx, instanceID, serviceName)
-	
+
 	repo, err := mysql.New()
 	if err != nil {
 		panic(err)
 	}
-
-	ctrl := metadata.New(repo)
+	cache := memory.New()
+	ctrl := metadata.New(repo, cache)
 	h := grpchandler.New(ctrl)
+
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%v", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
