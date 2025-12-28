@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	_ "github.com/go-sql-driver/mysql"
+	"movieexample.com/rating/internal/repository"
 	"movieexample.com/rating/pkg/model"
 )
 
@@ -43,6 +44,10 @@ func (r *Repository) Get(ctx context.Context, recordID model.RecordID, recordTyp
 			RecordID:   string(recordID),
 		})
 	}
+	if len(res) == 0 {
+		return nil, repository.ErrNotFound
+	}
+
 	return res, nil
 }
 

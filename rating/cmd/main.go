@@ -16,7 +16,7 @@ import (
 	rating "movieexample.com/rating/internal/controller"
 	grpchandler "movieexample.com/rating/internal/handler/grpc"
 	"movieexample.com/rating/internal/ingester/kafka"
-	"movieexample.com/rating/internal/repository/memory"
+	"movieexample.com/rating/internal/repository/mysql"
 )
 
 const serviceName = "rating"
@@ -44,7 +44,11 @@ func main() {
 		}
 	}()
 	defer registry.Deregister(ctx, instanceID, serviceName)
-	repo := memory.New()
+
+	repo, err := mysql.New()
+	if err != nil {
+		panic(err)
+	}
 
 	// adding kafka ingester
 	ingester, err := kafka.NewIngester("localhost", "rating", "ratings")
