@@ -3,16 +3,18 @@ module movieexample.com
 go 1.25.5
 
 require (
+	github.com/confluentinc/confluent-kafka-go v1.9.2
+	github.com/go-sql-driver/mysql v1.9.3
 	github.com/hashicorp/consul/api v1.13.1
+	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.11
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
-	github.com/confluentinc/confluent-kafka-go v1.9.2 // indirect
 	github.com/fatih/color v1.9.0 // indirect
-	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.1 // indirect
 	github.com/hashicorp/go-hclog v0.12.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.0.0 // indirect
@@ -27,5 +29,4 @@ require (
 	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.31.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251029180050-ab9386a59fda // indirect
-	google.golang.org/grpc v1.78.0 // indirect
 )
